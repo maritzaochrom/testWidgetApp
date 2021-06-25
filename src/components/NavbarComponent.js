@@ -11,8 +11,23 @@ import PrePublicacion from './PrePublicacion';
 import PostPublicacion from './PostPublicacion';
 import Noticia from './Noticia';
 import MultiCarouselExample from './MultiCarouselExample';
+import CalendarWidget from './CalendarWidget';
 
-const NavbarComponent = () => {
+
+const NavbarComponent = (props) => {
+
+
+    const querystring = window.location.search
+    console.log(querystring)
+
+    const params = new URLSearchParams(querystring)
+    const client = params.get('client')
+    console.log(client)
+
+    // OBTIENE LA URL, la mandas como props y obtienes los widgets dependiendo de que URL mandes
+    var URLactual = window.location
+    console.log(String(URLactual.ancestorOrigins[0]))
+
 
     const [formData, setFormData] = useState({
         email: "",
@@ -22,7 +37,7 @@ const NavbarComponent = () => {
     const [postPublicacion, setPostPublicacion] = useState({})
     const [prePublicacion, setPrePublicacion] = useState({})
     const [noticia, setNoticia] = useState({})
-    const [noticia2, setNoticia2] = useState({})
+
 
 
       const handleSubmit = (e) => {
@@ -37,7 +52,7 @@ const NavbarComponent = () => {
                 arrayPostPublicacion.length === 0 ? setPostPublicacion({}) : setPostPublicacion(arrayPostPublicacion[arrayPostPublicacion.length-1])
 
                 setNoticia(response.data.recordset.filter((post) => post.nb_plantilla === "Noticia"))
-                setNoticia2(response.data.recordset.filter((post) => post.nb_plantilla === "Noticia"))
+
 
             })
 
@@ -99,16 +114,18 @@ const NavbarComponent = () => {
             <PrePublicacion  prePublicacion={prePublicacion} />
             <PostPublicacion postPublicacion={postPublicacion} />
             <Noticia noticia={noticia}/>
-            {/* <MultiCarouselExample noticia2={noticia2}/> */}
+
+
 
             <div className="Youtube">
-                <ComponentWidget />
+                <ComponentWidget client={client}/>
             </div>
 
             <div className="Instagram">
-                <InstagramWidget/>
+                <InstagramWidget client={client}/>
             </div>
 
+            <CalendarWidget/>
         </div>
     )
 }
